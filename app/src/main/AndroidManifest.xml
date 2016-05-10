@@ -39,6 +39,14 @@
         <activity
             android:name=".ClassicScore"
             android:label="@string/title_activity_classic_score"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".NoWallsScore"
+            android:label="@string/title_activity_no_walls_score"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".BombScore"
+            android:label="@string/title_activity_bomb_score"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
