@@ -1,5 +1,4 @@
 package com.example.guest.snake;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -17,17 +16,17 @@ import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 
 public class MainMenu extends AppCompatActivity {
+
     private RelativeLayout snakeLayout;
     private Animation compileAnim;
     private AdView adView;
     private ImageView classicBtn;
     private ImageView noWallsBtn;
     private ImageView bombBtn;
-    private TextView titleLeft;
-    private TextView titleRight;
-    private TextView titleMiddle;
     private ImageView settingsBtn;
-
+    private TextView titleLeft;
+    private TextView titleMiddle;
+    private TextView titleRight;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,13 +41,22 @@ public class MainMenu extends AppCompatActivity {
         if(getSupportActionBar() != null) {
             getSupportActionBar().hide();
         }
+
         adView = new AdView(this);
         adView.setAdSize(AdSize.SMART_BANNER);
         adView.setAdUnitId(GameSettings.MY_AD_UNIT_ID);
         snakeLayout.addView(adView);
+
         AdRequest adRequest = new AdRequest.Builder().addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build();
         adView.loadAd(adRequest);
+
+        initClassic();
+        initNoWalls();
+        initBomb();
+        initTitle();
+        initSettings();
     }
+
 
     private void initClassic() {
         classicBtn = (ImageView) findViewById(R.id.classic);
@@ -65,12 +73,13 @@ public class MainMenu extends AppCompatActivity {
                 classicBtn.setImageResource(R.mipmap.classic);
                 classicBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View view) {
+                    public void onClick(View v) {
                         Intent intentClassic = new Intent(MainMenu.this, ClassicSnake.class);
                         intentClassic.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                         startActivity(intentClassic);
                     }
                 });
+
             }
 
             @Override
@@ -83,7 +92,7 @@ public class MainMenu extends AppCompatActivity {
 
     }
 
-    private void initNoWalls(){
+    private void initNoWalls() {
         noWallsBtn = (ImageView) findViewById(R.id.no_walls);
         compileAnim = AnimationUtils.loadAnimation(MainMenu.this, R.anim.anim_for_no_button);
         compileAnim.setDuration(GameSettings.ANIMATION_OPEN_BUTTON_DURATION);
@@ -98,12 +107,13 @@ public class MainMenu extends AppCompatActivity {
                 noWallsBtn.setImageResource(R.mipmap.no_walls);
                 noWallsBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View view) {
+                    public void onClick(View v) {
                         Intent intentNoWalls = new Intent(MainMenu.this, NoWallsSnake.class);
                         intentNoWalls.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                         startActivity(intentNoWalls);
                     }
                 });
+
             }
 
             @Override
@@ -115,7 +125,7 @@ public class MainMenu extends AppCompatActivity {
         noWallsBtn.startAnimation(compileAnim);
     }
 
-    private void initBomb(){
+    private void initBomb() {
         bombBtn = (ImageView) findViewById(R.id.bomb);
         compileAnim = AnimationUtils.loadAnimation(MainMenu.this, R.anim.anim_for_bomb_button);
         compileAnim.setDuration(GameSettings.ANIMATION_OPEN_BUTTON_DURATION);
@@ -130,12 +140,13 @@ public class MainMenu extends AppCompatActivity {
                 bombBtn.setImageResource(R.mipmap.bombsnake);
                 bombBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View view) {
+                    public void onClick(View v) {
                         Intent bombSnakeIntent = new Intent(MainMenu.this, BombSnake.class);
                         bombSnakeIntent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                         startActivity(bombSnakeIntent);
                     }
                 });
+
             }
 
             @Override
@@ -143,15 +154,16 @@ public class MainMenu extends AppCompatActivity {
 
             }
         });
+
         bombBtn.startAnimation(compileAnim);
     }
 
-    private void initTitle(){
+    private void initTitle() {
         titleLeft = (TextView) findViewById(R.id.snake_left);
         titleMiddle = (TextView) findViewById(R.id.snake_middle);
         titleRight = (TextView) findViewById(R.id.snake_right);
 
-//        animation left
+        // Set up animation for title left
         compileAnim = AnimationUtils.loadAnimation(MainMenu.this, R.anim.back_anim_for_title_left);
         compileAnim.setDuration(GameSettings.ANIMATION_HIDE_TITLE_DURATION);
         compileAnim.setAnimationListener(new Animation.AnimationListener() {
@@ -170,9 +182,10 @@ public class MainMenu extends AppCompatActivity {
 
             }
         });
-        titleMiddle.startAnimation(compileAnim);
 
-        //        animation middle
+        titleLeft.startAnimation(compileAnim);
+
+        // Set up animation for title middle
         compileAnim = AnimationUtils.loadAnimation(MainMenu.this, R.anim.back_anim_for_title_middle);
         compileAnim.setDuration(GameSettings.ANIMATION_HIDE_TITLE_DURATION);
         compileAnim.setAnimationListener(new Animation.AnimationListener() {
@@ -191,10 +204,10 @@ public class MainMenu extends AppCompatActivity {
 
             }
         });
+
         titleMiddle.startAnimation(compileAnim);
 
-        //        animation right
-
+        // Set up animation for title right
         compileAnim = AnimationUtils.loadAnimation(MainMenu.this, R.anim.back_anim_for_title_right);
         compileAnim.setDuration(GameSettings.ANIMATION_HIDE_TITLE_DURATION);
         compileAnim.setAnimationListener(new Animation.AnimationListener() {
@@ -213,7 +226,9 @@ public class MainMenu extends AppCompatActivity {
 
             }
         });
+
         titleRight.startAnimation(compileAnim);
+
     }
 
     private void initSettings() {
@@ -231,8 +246,10 @@ public class MainMenu extends AppCompatActivity {
                 settingsBtn.setImageResource(R.mipmap.settings);
                 settingsBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View view) {
-                        getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                    public void onClick(View v) {
+                        getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+
                         settingsBtn.setImageResource(R.mipmap.menu_options);
                         classicBtn.setImageResource(R.mipmap.menu_options);
                         noWallsBtn.setImageResource(R.mipmap.menu_options);
@@ -250,13 +267,13 @@ public class MainMenu extends AppCompatActivity {
                         Animation animation4 = AnimationUtils.loadAnimation(MainMenu.this, R.anim.reverse_for_settings_button);
                         animation4.setDuration(GameSettings.ANIMATION_CLOSE_BUTTON_DURATION);
 
-                        Animation animationTitleLeft = AnimationUtils.loadAnimation(MainMenu.this, R.anim.back_anim_for_title_left);
+                        Animation animationTitleLeft = AnimationUtils.loadAnimation(MainMenu.this, R.anim.anim_for_title_left);
                         animationTitleLeft.setDuration(GameSettings.ANIMATION_SHOW_TITLE_DURATION);
 
-                        Animation animationTitleMiddle = AnimationUtils.loadAnimation(MainMenu.this, R.anim.back_anim_for_title_middle);
+                        Animation animationTitleMiddle = AnimationUtils.loadAnimation(MainMenu.this, R.anim.anim_for_title_middle);
                         animationTitleMiddle.setDuration(GameSettings.ANIMATION_SHOW_TITLE_DURATION);
 
-                        Animation animationTitleRight = AnimationUtils.loadAnimation(MainMenu.this, R.anim.back_anim_for_title_right);
+                        Animation animationTitleRight = AnimationUtils.loadAnimation(MainMenu.this, R.anim.anim_for_title_right);
                         animationTitleRight.setDuration(GameSettings.ANIMATION_SHOW_TITLE_DURATION);
 
                         classicBtn.startAnimation(animation);
@@ -276,9 +293,10 @@ public class MainMenu extends AppCompatActivity {
                                 startActivity(settingsIntent);
                             }
                         }, GameSettings.START_NEW_ACTIVITY_DURATION);
+
                     }
                 });
-                settingsBtn.setAnimation(compileAnim);
+
             }
 
             @Override
@@ -286,11 +304,7 @@ public class MainMenu extends AppCompatActivity {
 
             }
         });
+        settingsBtn.setAnimation(compileAnim);
     }
-
-
-
-
-
 
 }
