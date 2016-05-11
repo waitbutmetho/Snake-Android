@@ -307,4 +307,8 @@ public class MainMenu extends AppCompatActivity {
         settingsBtn.setAnimation(compileAnim);
     }
 
+    @Override
+    public void onBackPressed() {
+    }
+
 }

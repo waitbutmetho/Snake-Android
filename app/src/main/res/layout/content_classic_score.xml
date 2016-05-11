@@ -8,8 +8,7 @@
     android:paddingLeft="0dp"
     android:paddingRight="0dp"
     android:paddingTop="0dp"
-    tools:context="com.example.guest.snake.ClassicScore"
-    tools:showIn="@layout/activity_classic_score">
+    tools:context="com.example.guest.snake.ClassicScore">
 
     <TextView
         android:layout_width="wrap_content"

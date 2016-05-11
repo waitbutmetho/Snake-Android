@@ -18,15 +18,19 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+
 public class ClassicScore extends AppCompatActivity {
+
     private TextView scoreTextView;
-    private Animation animation;
     private TextView highScoreTextView;
     private ImageView playAgainImageView;
     private ImageView mainMenuImageView;
     private TextView gameOverTitleLeftTextView;
     private TextView gameOverTitleRightTextView;
     private TextView gameOverTitleMiddleTextView;
+
+    private Animation animation;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,15 +38,16 @@ public class ClassicScore extends AppCompatActivity {
         View decorView = getWindow().getDecorView();
         int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
         decorView.setSystemUiVisibility(uiOptions);
-        if (getSupportActionBar() != null){
+        if(getSupportActionBar() != null) {
             getSupportActionBar().hide();
         }
 
         initTitle();
-        initHighScore();
-        initMainMenu();
-        initPlayAgain();
         initScore();
+        initHighScore();
+        initPlayAgain();
+        initMainMenu();
+
     }
 
     private void initScore() {
@@ -59,7 +64,7 @@ public class ClassicScore extends AppCompatActivity {
             public void onAnimationEnd(Animation animation) {
                 SharedPreferences preferences = getApplicationContext().getSharedPreferences(
                         GameSettings.PREFS_NAME, Context.MODE_PRIVATE);
-                int playersScore = preferences.getInt("Score", 0);
+                int playersScore = preferences.getInt(GameSettings.PLAYER_SCORE, 0);
                 scoreTextView.setText("Score: " + String.valueOf(playersScore));
                 scoreTextView.setTextColor(Color.WHITE);
                 scoreTextView.setGravity(Gravity.CENTER);
@@ -72,9 +77,10 @@ public class ClassicScore extends AppCompatActivity {
             }
         });
         scoreTextView.startAnimation(animation);
+
     }
 
-    private void initHighScore(){
+    private void initHighScore() {
         highScoreTextView = (TextView) findViewById(R.id.mode_high_score);
         animation = AnimationUtils.loadAnimation(this, R.anim.anim_for_no_button);
         animation.setDuration(GameSettings.ANIMATION_OPEN_BUTTON_DURATION);
@@ -86,7 +92,7 @@ public class ClassicScore extends AppCompatActivity {
 
             @Override
             public void onAnimationEnd(Animation animation) {
-               setHighScore();
+                setHighScore();
             }
 
             @Override
@@ -96,26 +102,28 @@ public class ClassicScore extends AppCompatActivity {
         });
 
         highScoreTextView.startAnimation(animation);
+
     }
 
-    private void setHighScore(){
+    private void setHighScore() {
         SharedPreferences preferences = getApplicationContext().getSharedPreferences(
                 GameSettings.PREFS_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
-        int highScore = preferences.getInt("HighScoreClassic", 0);
-        int lastScore = preferences.getInt("Score", 0);
-        if (lastScore > highScore){
-            editor.putInt("HighScoreClassic", lastScore);
+        int highScore = preferences.getInt(GameSettings.HIGH_SCORE_CLASSIC, 0);
+        int lastScore = preferences.getInt(GameSettings.PLAYER_SCORE, 0);
+        if(lastScore > highScore) {
+            editor.putInt(GameSettings.HIGH_SCORE_CLASSIC, lastScore);
             editor.commit();
             highScore = lastScore;
         }
+
         highScoreTextView.setText("High: " + String.valueOf(highScore));
         highScoreTextView.setTextColor(Color.WHITE);
         highScoreTextView.setGravity(Gravity.CENTER);
         highScoreTextView.setBackgroundResource(R.mipmap.menu_options);
     }
 
-    private void initPlayAgain(){
+    private void initPlayAgain() {
         playAgainImageView = (ImageView) findViewById(R.id.play_again);
         animation = AnimationUtils.loadAnimation(this, R.anim.anim_for_settings_button);
         animation.setDuration(GameSettings.ANIMATION_OPEN_BUTTON_DURATION);
@@ -130,7 +138,7 @@ public class ClassicScore extends AppCompatActivity {
                 playAgainImageView.setImageResource(R.mipmap.again);
                 playAgainImageView.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View view) {
+                    public void onClick(View v) {
                         Intent intentClassic = new Intent(ClassicScore.this, ClassicSnake.class);
                         intentClassic.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                         startActivity(intentClassic);
@@ -145,7 +153,9 @@ public class ClassicScore extends AppCompatActivity {
         });
 
         playAgainImageView.startAnimation(animation);
+
     }
+
 
     private void initMainMenu() {
         mainMenuImageView = (ImageView) findViewById(R.id.goto_main_menu);
@@ -158,18 +168,16 @@ public class ClassicScore extends AppCompatActivity {
             }
 
             @Override
-            public void onAnimationEnd(final Animation animation) {
+            public void onAnimationEnd(Animation animation) {
                 mainMenuImageView.setImageResource(R.mipmap.menu);
                 mainMenuImageView.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View view) {
+                    public void onClick(View v) {
                         getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
                                 WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-
                         scoreTextView.setBackgroundResource(R.mipmap.menu_options);
                         scoreTextView.setText("");
                         scoreTextView.setTextColor(Color.BLACK);
-
                         highScoreTextView.setBackgroundResource(R.mipmap.menu_options);
                         highScoreTextView.setText("");
                         highScoreTextView.setTextColor(Color.BLACK);
@@ -177,18 +185,18 @@ public class ClassicScore extends AppCompatActivity {
                         playAgainImageView.setBackgroundResource(R.mipmap.menu_options);
                         mainMenuImageView.setBackgroundResource(R.mipmap.menu_options);
 
-                        //Reverse Animation
+                        // Reverse animation
                         Animation animationScore = AnimationUtils.loadAnimation(ClassicScore.this, R.anim.reverse_for_classic_button);
                         animationScore.setDuration(GameSettings.ANIMATION_CLOSE_BUTTON_DURATION);
 
                         Animation animationHighScore = AnimationUtils.loadAnimation(ClassicScore.this, R.anim.reverse_for_no_button);
-                        animationScore.setDuration(GameSettings.ANIMATION_CLOSE_BUTTON_DURATION);
+                        animationHighScore.setDuration(GameSettings.ANIMATION_CLOSE_BUTTON_DURATION);
 
                         Animation animationPlayAgain = AnimationUtils.loadAnimation(ClassicScore.this, R.anim.reverse_for_settings_button);
-                        animationScore.setDuration(GameSettings.ANIMATION_CLOSE_BUTTON_DURATION);
+                        animationPlayAgain.setDuration(GameSettings.ANIMATION_CLOSE_BUTTON_DURATION);
 
                         Animation animationMainMenu = AnimationUtils.loadAnimation(ClassicScore.this, R.anim.reverse_for_bomb_button);
-                        animationScore.setDuration(GameSettings.ANIMATION_CLOSE_BUTTON_DURATION);
+                        animationMainMenu.setDuration(GameSettings.ANIMATION_CLOSE_BUTTON_DURATION);
 
                         Animation animationTitleLeft = AnimationUtils.loadAnimation(ClassicScore.this, R.anim.anim_for_title_left);
                         animationTitleLeft.setDuration(GameSettings.ANIMATION_SHOW_TITLE_DURATION);
@@ -207,8 +215,8 @@ public class ClassicScore extends AppCompatActivity {
                         gameOverTitleRightTextView.startAnimation(animationTitleRight);
                         gameOverTitleMiddleTextView.startAnimation(animationTitleMiddle);
 
-                        Handler myHandler = new Handler();
-                        myHandler.postDelayed(new Runnable() {
+                        Handler myHander = new Handler();
+                        myHander.postDelayed(new Runnable() {
                             @Override
                             public void run() {
                                 Intent intentMain = new Intent(ClassicScore.this, MainMenu.class);
@@ -216,6 +224,8 @@ public class ClassicScore extends AppCompatActivity {
                                 startActivity(intentMain);
                             }
                         }, GameSettings.START_NEW_ACTIVITY_DURATION);
+
+
                     }
                 });
             }
@@ -295,5 +305,12 @@ public class ClassicScore extends AppCompatActivity {
         });
         gameOverTitleMiddleTextView.startAnimation(animationTitleMiddle);
 
+
     }
+
+    @Override
+    public void onBackPressed() {
+    }
+
+
 }

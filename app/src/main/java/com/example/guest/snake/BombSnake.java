@@ -95,7 +95,7 @@ public class BombSnake extends AppCompatActivity {
 
     private void musicOnOff() {
         SharedPreferences preferences = getApplicationContext().getSharedPreferences(GameSettings.PREFS_NAME, Context.MODE_PRIVATE);
-        playMusic = preferences.getBoolean("PlayMusic", true);
+        playMusic = preferences.getBoolean(GameSettings.PLAY_MUSIC, true);
         musicPlayer = MediaPlayer.create(BombSnake.this, R.raw.music);
         if (playMusic) {
             musicPlayer.setLooping(true);
@@ -227,7 +227,7 @@ public class BombSnake extends AppCompatActivity {
         });
 
         SharedPreferences preferences = getApplicationContext().getSharedPreferences(GameSettings.PREFS_NAME, Context.MODE_PRIVATE);
-        useButtons = preferences.getBoolean("UseButtonControls", true);
+        useButtons = preferences.getBoolean(GameSettings.USE_BUTTON_CONTROLS, true);
         if (useButtons) {
             btnRight.setVisibility(View.VISIBLE);
             btnLeft.setVisibility(View.VISIBLE);
@@ -292,11 +292,11 @@ public class BombSnake extends AppCompatActivity {
         }
     }
 
-    private void gameOver(){
+    private void gameOver() {
         gameOver = true;
         SharedPreferences preferences = getApplicationContext().getSharedPreferences(GameSettings.PREFS_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
-        editor.putInt("Score", playerScore);
+        editor.putInt(GameSettings.PLAYER_SCORE, playerScore);
         editor.commit();
         Intent intentScore = new Intent(BombSnake.this, BombScore.class);
         intentScore.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
@@ -348,17 +348,17 @@ public class BombSnake extends AppCompatActivity {
     }
 
     private void setBombs() {
+
         Random rand = new Random();
-        for (int i = 0; i <GameSettings.NUMBER_BOMBS; i++) {
+        for(int i=0; i<GameSettings.NUMBER_BOMBS; i++) {
             ImageView bomb = new ImageView(this);
             float x = rand.nextFloat() * (screenWidth - bomb.getWidth());
             float y = rand.nextFloat() * (screenHeight - bomb.getHeight());
             bomb.setImageResource(R.mipmap.food_poison);
 
             RelativeLayout.LayoutParams layoutParamsBomb = new
-                    RelativeLayout.LayoutParams(((screenWidth * 20)/450),
-                    ((screenHeight * 30)/ 450));
-
+                    RelativeLayout.LayoutParams(((screenWidth *20)/450),
+                    ((screenHeight * 30)/450));
             bomb.setLayoutParams(layoutParamsBomb);
             bomb.setX(x);
             bomb.setY(y);
@@ -414,27 +414,25 @@ public class BombSnake extends AppCompatActivity {
                                     }
                                 }
                                 isCollide = false;
-                                for (int i = 0; i < bombs.size(); i++) {
+                                for(int i=0; i<bombs.size(); i++) {
                                     ImageView bomb = bombs.get(i);
 
                                     float left2 = bomb.getX() - bomb.getWidth();
                                     float top2 = bomb.getY() - bomb.getHeight();
                                     float right2 = bomb.getX() + bomb.getWidth();
-                                    float bottom2 = bomb.getY() + bomb.getHeight();
+                                    float bottom2 = bomb.getY() +  bomb.getHeight();
 
                                     Rect rc1 = new Rect();
                                     rc1.set((int) left, (int) top, (int) right, (int) bottom);
                                     head.getHitRect(rc1);
-
                                     Rect rc2 = new Rect();
                                     rc2.set((int) left2, (int) top2, (int) right2, (int) bottom2);
                                     bomb.getHitRect(rc2);
-                                    if (Rect.intersects(rc1, rc2)) {
-                                        if (isCollide == false) {
+                                    if(Rect.intersects(rc1, rc2)) {
+                                        if(isCollide == false) {
                                             isCollide = true;
                                             gameOver();
                                         }
-
                                     }
 
                                 }
@@ -448,7 +446,7 @@ public class BombSnake extends AppCompatActivity {
                                         } else {
                                             imageView.setX(imageView.getX() + speedX);
                                             if (imageView.getX() + imageView.getWidth() >= screenWidth) {
-                                                //imageView.setX(screenWidth - imageView.getWidth() / 2);
+//                                                imageView.setX(screenWidth - imageView.getWidth() / 2);
                                                 imageView.setX(0);
                                             }
                                         }
@@ -463,7 +461,7 @@ public class BombSnake extends AppCompatActivity {
                                         } else {
                                             imageView.setX(imageView.getX() - speedX);
                                             if (imageView.getX() <= 0) {
-                                                // imageView.setX(0);
+//                                                imageView.setX(0);
                                                 imageView.setX(screenWidth - imageView.getWidth());
                                             }
                                         }
@@ -478,7 +476,7 @@ public class BombSnake extends AppCompatActivity {
                                         } else {
                                             imageView.setY(imageView.getY() + speedY);
                                             if ((imageView.getY() + imageView.getHeight() >= screenHeight)) {
-                                                //imageView.setY(screenHeight - imageView.getHeight() / 2);
+//                                                imageView.setY(screenHeight - imageView.getHeight() / 2);
                                                 imageView.setY(0);
                                             }
                                         }
@@ -493,7 +491,7 @@ public class BombSnake extends AppCompatActivity {
                                         } else {
                                             imageView.setY(imageView.getY() - speedY);
                                             if ((imageView.getY() <= 0)) {
-                                                //imageView.setY(0);
+//                                                imageView.setY(0);
                                                 imageView.setY(screenHeight - imageView.getHeight());
                                             }
                                         }
@@ -590,6 +588,7 @@ public class BombSnake extends AppCompatActivity {
                     GameSettings.LAYOUT_MARGIN);
 
             setFoodPoints();
+
             bombs = new ArrayList<>();
             setBombs();
 
@@ -601,4 +600,9 @@ public class BombSnake extends AppCompatActivity {
             super.onWindowFocusChanged(hasFocus);
         }
     }
+
+    @Override
+    public void onBackPressed() {
+    }
+
 }

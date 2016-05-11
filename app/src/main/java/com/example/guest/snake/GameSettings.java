@@ -25,7 +25,7 @@ public final class GameSettings {
 
     public static final int SHAKE_DURATION = 500;
 
-    public static final int GAME_THREAD = 80;
+    public static final int GAME_THREAD = 50;
 
     public static final  int GAME_THREAD_BOMB = 60;
 
@@ -40,4 +40,12 @@ public final class GameSettings {
     public static final  int START_NEW_ACTIVITY_DURATION = 200;
 
     public static final String PREFS_NAME = "SnakePreferences";
+
+    public static final String PLAYER_SCORE ="Score";
+    public static final String HIGH_SCORE_CLASSIC ="HighScoreClassic";
+    public static final String  HIGH_SCORE_NOWALLS ="HighScoreNoWalls";
+    public static final String  HIGH_SCORE_BOMB = "HighScoreBomb";
+    public static final String PLAY_MUSIC ="PlayMusic";
+    public static final String USE_BUTTON_CONTROLS ="UseButtonControls";
+
 }
